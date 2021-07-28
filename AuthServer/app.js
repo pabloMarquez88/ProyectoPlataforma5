@@ -6,6 +6,29 @@ const app = express();
 const mainDBRepository = require('./src/repositories/main.repository');
 const sequelize = require('./src/model/sequelize.facade')
 
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+
+// Extended: https://swagger.io/specification/#infoObject
+const swaggerOptions = {
+    swaggerDefinition: {
+        info: {
+            version: "1.0.0",
+            title: "Customer API",
+            description: "Customer API Information",
+            contact: {
+                name: "Amazing Developer"
+            },
+            servers: ["http://localhost:3000"]
+        }
+    },
+    // ['.routes/*.js']
+    apis: ["app.js", "../app.js", "router.js", "./src/router.js"]
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 mainDBRepository.connect();
 app.mainDBRepository = mainDBRepository;
 

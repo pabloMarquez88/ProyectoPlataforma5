@@ -1,5 +1,10 @@
 module.exports = (sequelize, Sequelize) => {
-    const User = sequelize.define("users_chat", {
+    const UserChat = sequelize.define("usersChat", {
+        id: {
+            type: Sequelize.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
         username: {
             type: Sequelize.STRING
         },
@@ -11,5 +16,5 @@ module.exports = (sequelize, Sequelize) => {
         }
     });
 
-    return User;
+    return UserChat;
 };

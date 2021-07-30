@@ -42,7 +42,7 @@ db.channel.belongsToMany(db.UserChat,{
 
 db.UserChat.belongsToMany(db.channel,{
     through: "userschats_channel",
-    as:"pablo"
+    as:"suscriptions"
 })
 
 db.ROLES = ["user", "admin", "moderator"];

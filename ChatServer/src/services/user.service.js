@@ -81,7 +81,7 @@ test = async() => {
     console.log("--------------------------------------")
     console.log(await user2.getOwnchats());
     console.log("--------------------------------------")
-    console.log(await user2.getPablo())
+    console.log(await user2.getSuscriptions())
     console.log("--------------------------------------")
 
     console.log("FIN")

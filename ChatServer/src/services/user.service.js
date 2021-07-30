@@ -4,7 +4,7 @@ var bcrypt = require("bcryptjs");
 const db = sequelize.db;
 const Op = db.Sequelize.Op;
 const Role = db.role;
-const User = db.user;
+const User = db.UserChat;
 const Channel = db.channel;
 /*
 checkDuplicateUsernameOrEmail = async (username, email) => {
@@ -59,10 +59,40 @@ createUser = async (username, email, password, roles) => {
     }
 }*/
 test = async() => {
+    console.log("TEST")
+    let user1 = await  User.findOne({where:{ email:"email"}});
+    let user2 = await  User.findOne({where:{ email:"email2"}});
+    let user3 = await  User.findOne({where:{ email:"email3"}});
+    console.log(user1.id);
+    console.log(user2.id);
+    console.log(user3.id);
+    //let channel = await  Channel.create({name:"elCanal"});
+    let channel1 = await  Channel.findOne({where:{name:"elCanal"}});
+    let users = [];
+    users.push(user2);
+    users.push(user3);
+    //channel.setUsersChat(users);
+    //channel1.setUserchats(user2);
+    //channel1.setPablo(users);
+    //channel1.setUserchat(user2);
+    console.log("--------------------------------------")
+    console.log(await channel1.getPablo());
+    //channel1.save();
+    console.log("--------------------------------------")
+    console.log(await user2.getOwnchats());
+    console.log("--------------------------------------")
+    console.log(await user2.getPablo())
+    console.log("--------------------------------------")
 
+    console.log("FIN")
+    return 1;
 }
 
-test2 = async() => {}
+test2 = async() => {
+    console.log("TEST2")
+    //User.create({});
+    return 2;
+}
 
 const verifySignUp = {
     /*checkRolesExisted: checkRoleValid,

@@ -1,10 +1,10 @@
+const sequelize = require('./src/model/sequelize.facade')
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const {router} = require('./src/router');
 const app = express();
 const mainDBRepository = require('./src/repositories/main.repository');
-const sequelize = require('./src/model/sequelize.facade')
 
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");

@@ -1,16 +1,8 @@
+const { DataTypes } = require("sequelize");
 module.exports = (sequelize, Sequelize) => {
     const Channel = sequelize.define("channels", {
-        username: {
+        name: {
             type: Sequelize.STRING
-        },
-        email: {
-            type: Sequelize.STRING
-        },
-        token: {
-            type: Sequelize.STRING
-        },
-        date: {
-            type: DataTypes.DATE
         }
     });
 

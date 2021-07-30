@@ -15,11 +15,13 @@ class userController {
     }*/
 
     static async test(req, res){
-        await userService.createChannel();
+        const result = await userService.test();
+        res.status(200).send();
     }
 
     static async test2(req, res){
-        await userService.selectChannel();
+        const result = await userService.test2();
+        res.status(200).send();
     }
 
 }

@@ -23,28 +23,26 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.user = require("./user.model.js")(sequelize, Sequelize);
+db.UserChat = require("./userChat.model.js")(sequelize, Sequelize);
 db.channel = require("./channel.model.js")(sequelize, Sequelize);
 db.media = require("./media.model.js")(sequelize, Sequelize);
 db.poll = require("./poll.model.js")(sequelize, Sequelize);
 db.text = require("./text.model.js")(sequelize, Sequelize);
 db.event = require("./event.model.js")(sequelize, Sequelize);
 
-db.user.hasMany(db.channel, {
-    foreignKey: 'userId'
+db.UserChat.hasMany(db.channel, {
+    as : 'ownchats'
 })
-db.channel.belongsTo(db.user)
+db.channel.belongsTo(db.UserChat)
 
-db.channel.belongsToMany(db.user,{
-    through: "user_channel",
-    foreignKey: "channelId",
-    otherKey: "userId"
+db.channel.belongsToMany(db.UserChat,{
+    through: "userschats_channel",
+    as: 'pablo'
 })
 
-db.user.belongsToMany(db.channel,{
-    through: "user_channel",
-    foreignKey: "userId",
-    otherKey: "channelId"
+db.UserChat.belongsToMany(db.channel,{
+    through: "userschats_channel",
+    as:"pablo"
 })
 
 db.ROLES = ["user", "admin", "moderator"];

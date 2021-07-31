@@ -1,16 +1,22 @@
+const chatService = require('../services/chat.service.js');
+
 class chatController{
-    static async postText() {
+    static async postText(req, res) {
+        let {channelId, text, exist} = req.body;
+        if (exist){
+            await chatService.persistTextChat(channelId, text);
+        }
+        res.status(200).send("HOLA");
+    }
+
+    static async postEvent(req, res) {
 
     }
 
-    static async postEvent() {
+    static async postPoll(req, res) {
 
     }
-
-    static async postPoll() {
-
-    }
-    static async postMedia() {
+    static async postMedia(req, res) {
 
     }
 

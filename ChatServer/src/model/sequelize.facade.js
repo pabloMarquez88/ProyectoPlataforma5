@@ -97,14 +97,14 @@ db.UserChat.belongsToMany(db.poll, {
 /**
  * Relation for channel media message
  */
-/*db.channel.hasMany(db.media, {
+db.channel.hasMany(db.media, {
     as : 'medias'
 });
-db.media.belongsTo(db.channel);*/
+db.media.belongsTo(db.channel);
 
 
 
-db.sequelize.sync({force: true}).then(() => {
+db.sequelize.sync({force: false}).then(() => {
     console.log('Drop and Resync Db');
     //initial();
 });

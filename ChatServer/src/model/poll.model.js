@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize, Sequelize) => {
-    const Event = sequelize.define("events", {
+    const Event = sequelize.define("polls", {
         options: {
             type: Sequelize.STRING
         },

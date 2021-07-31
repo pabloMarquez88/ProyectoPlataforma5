@@ -30,43 +30,83 @@ db.poll = require("./poll.model.js")(sequelize, Sequelize);
 db.text = require("./text.model.js")(sequelize, Sequelize);
 db.event = require("./event.model.js")(sequelize, Sequelize);
 
+
+/**
+ * Relation for channel user ownership
+ */
 db.UserChat.hasMany(db.channel, {
     as : 'ownchats'
-})
-db.channel.belongsTo(db.UserChat)
+});
+db.channel.belongsTo(db.UserChat);
 
+/**
+ * Relation for channel user subscription
+ */
 db.channel.belongsToMany(db.UserChat,{
     through: "userschats_channel",
-    as: 'pablo'
-})
+    as: 'suscriptions'
+});
 
 db.UserChat.belongsToMany(db.channel,{
     through: "userschats_channel",
     as:"suscriptions"
-})
+});
 
-db.ROLES = ["user", "admin", "moderator"];
+/**
+ * Relation for channel text message
+ */
+db.channel.hasMany(db.text, {
+    as : 'texts'
+});
+db.text.belongsTo(db.channel);
 
-db.sequelize.sync({force: false}).then(() => {
+/**
+ * Relation for channel event message
+ */
+db.channel.hasMany(db.event, {
+    as : 'events'
+});
+db.event.belongsTo(db.channel);
+
+db.event.belongsToMany(db.UserChat, {
+    through: "userschats_event",
+    as: 'eventresponses'
+});
+db.UserChat.belongsToMany(db.event, {
+    through: "userschats_event",
+    as: 'userevents'
+});
+
+/**
+ * Relation for channel poll message
+ */
+db.channel.hasMany(db.poll, {
+    as : 'polls'
+});
+db.poll.belongsTo(db.channel);
+
+db.poll.belongsToMany(db.UserChat, {
+    through: "userschats_poll",
+    as: 'pollresponses'
+});
+db.UserChat.belongsToMany(db.poll, {
+    through: "userschats_poll",
+    as: 'polls'
+});
+
+/**
+ * Relation for channel media message
+ */
+/*db.channel.hasMany(db.media, {
+    as : 'medias'
+});
+db.media.belongsTo(db.channel);*/
+
+
+
+db.sequelize.sync({force: true}).then(() => {
     console.log('Drop and Resync Db');
     //initial();
 });
-
-function initial() {
-    db.role.create({
-        id: 1,
-        name: "user"
-    });
-
-    db.role.create({
-        id: 2,
-        name: "moderator"
-    });
-
-    db.role.create({
-        id: 3,
-        name: "admin"
-    });
-}
 
 module.exports = {db};

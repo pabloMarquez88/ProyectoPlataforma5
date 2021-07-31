@@ -1,10 +1,8 @@
 const sequelize = require('../model/sequelize.facade');
 const {getResponse} = require('../utils/common.util');
-const {PROPOSED} = require('../utils/constant')
 const db = sequelize.db;
 const Channel = db.channel;
 const Text = db.text;
-const Event = db.event;
 
 persistTextChat = async(channelId, textMessage) => {
     console.log("saving text chat")
@@ -22,17 +20,10 @@ persistTextChat = async(channelId, textMessage) => {
     return getResponse(200, "chat saved");
 }
 
-persistMediaChat = async(channelId) =>{
-    console.log("saving media chat")
-    let channel = await Channel.findOne({where: {id: channelId}});
-
-}
 
 
-
-const chatService = {
-    persistTextChat : persistTextChat,
-    persistMediaChat : persistMediaChat
+const textService = {
+    persistTextChat : persistTextChat
 };
 
-module.exports = chatService;
+module.exports = textService;

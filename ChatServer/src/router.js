@@ -15,4 +15,10 @@ router.post(`/${version}/chat/event`, chatController.postEvent);
 router.post(`/${version}/chat/poll`, chatController.postPoll);
 router.post(`/${version}/chat/media`, chatController.postMedia);
 
+router.put(`/${version}/chat/event`, chatController.updateEventStatus);
+router.put(`/${version}/chat/event/reply`, chatController.replyToEvent);
+
+router.put(`/${version}/chat/poll/reply`, chatController.handlePollReply);
+router.put(`/${version}/chat/poll`, chatController.updatePollStatus);
+
 module.exports = {router, version};

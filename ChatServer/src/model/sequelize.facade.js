@@ -69,12 +69,21 @@ db.channel.hasMany(db.event, {
 db.event.belongsTo(db.channel);
 
 db.event.belongsToMany(db.UserChat, {
-    through: "userschats_event",
-    as: 'eventresponses'
+    through: "userschats_event_assist",
+    as: 'userassist'
 });
 db.UserChat.belongsToMany(db.event, {
-    through: "userschats_event",
-    as: 'userevents'
+    through: "userschats_event_assist",
+    as: 'assistevents'
+});
+
+db.event.belongsToMany(db.UserChat, {
+    through: "userschats_event_reject",
+    as: 'userreject'
+});
+db.UserChat.belongsToMany(db.event, {
+    through: "userschats_event_reject",
+    as: 'rejectevents'
 });
 
 /**

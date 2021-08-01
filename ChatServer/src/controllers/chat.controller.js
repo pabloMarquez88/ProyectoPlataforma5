@@ -34,6 +34,7 @@ class chatController{
         }
         res.status(200).send("HOLA");
     }
+
     static async postMedia(req, res) {
         let {channelId, base64Image, filename, type, exist} = req.body;
         if (exist){
@@ -43,6 +44,47 @@ class chatController{
         }
         res.status(200).send("HOLA");
     }
+
+    static async updateEventStatus(req, res) {
+        let {channelId, eventId, status, exist} = req.body;
+        if (exist){
+            let result = await eventService.updateStatusEventChat(channelId, eventId, status);
+            res.status(result.status).send(result.message);
+            return;
+        }
+        res.status(200).send("HOLA");
+    }
+
+    static async replyToEvent(req, res) {
+        let {eventId, userId, reply, exist} = req.body;
+        if (exist){
+            let result = await eventService.addResponseToEvent(eventId, userId, reply);
+            res.status(result.status).send(result.message);
+            return;
+        }
+        res.status(200).send("HOLA");
+    }
+
+    static async handlePollReply(req, res) {
+        let {pollId, userId, reply, exist} = req.body;
+        if (exist){
+            let result = await pollService.handlePollReply(pollId, userId, reply);
+            res.status(result.status).send(result.message);
+            return;
+        }
+        res.status(200).send("HOLA");
+    }
+
+    static async updatePollStatus(req, res) {
+        let {pollId, status, exist} = req.body;
+        if (exist){
+            let result = await pollService.updatePollStatus(pollId, status);
+            res.status(result.status).send(result.message);
+            return;
+        }
+        res.status(200).send("HOLA");
+    }
+
 
 }
 

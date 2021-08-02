@@ -24,6 +24,8 @@ router.post(`/${version}/chat/media`, chatController.postMedia);
 
 router.post(`/${version}/chat/text`, chatController.postText);
 
+router.get(`/${version}/chat/`, chatController.getConsolidated);
+
 
 
 

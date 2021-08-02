@@ -2,12 +2,13 @@ const textService = require('../services/text.service.js');
 const pollService = require('../services/poll.service.js');
 const eventService = require('../services/event.service.js');
 const mediaService = require('../services/media.service.js');
+const consolidatedService = require('../services/consolidated.service.js');
 
 class chatController{
     static async postText(req, res) {
-        let {channelId, text, exist} = req.body;
+        let {channelId, text, userId, exist} = req.body;
         if (exist){
-            let result = await textService.persistTextChat(channelId, text);
+            let result = await textService.persistTextChat(channelId, userId, text);
             res.status(result.status).send(result.message);
             return;
         }
@@ -15,9 +16,9 @@ class chatController{
     }
 
     static async postEvent(req, res) {
-        let {channelId,content, location, dateStart, dateEnd, exist} = req.body;
+        let {channelId,content, location, dateStart, dateEnd, exist, userId} = req.body;
         if (exist){
-            let result = await eventService.persistEventChat(channelId, content, location, dateStart, dateEnd)
+            let result = await eventService.persistEventChat(channelId, content, location, dateStart, dateEnd, userId)
             res.status(result.status).send(result.message);
             return;
         }
@@ -26,9 +27,9 @@ class chatController{
     }
 
     static async postPoll(req, res) {
-        let {channelId, options, exist, text} = req.body;
+        let {channelId, options, exist, text, userId} = req.body;
         if (exist){
-            let result = await pollService.persistPollChat(channelId, options, text, exist)
+            let result = await pollService.persistPollChat(channelId, options, text, exist, userId)
             res.status(result.status).send(result.message);
             return;
         }
@@ -36,9 +37,9 @@ class chatController{
     }
 
     static async postMedia(req, res) {
-        let {channelId, base64Image, filename, type, exist} = req.body;
+        let {channelId, base64Image, filename, type, exist, userId} = req.body;
         if (exist){
-            let result = await mediaService.persistMediaChat(channelId, base64Image, filename, type);
+            let result = await mediaService.persistMediaChat(channelId, base64Image, filename, userId, type);
             res.status(result.status).send(result.message);
             return;
         }
@@ -99,6 +100,16 @@ class chatController{
         let {eventId, userId, exist} = req.body;
         if (exist){
             let result = await eventService.getEventResults(eventId, userId);
+            res.status(result.status).send(result.message);
+            return;
+        }
+        res.status(200).send("HOLA");
+    }
+
+    static async getConsolidated(req, res) {
+        let {userId, exist} = req.body;
+        if (exist){
+            let result = await consolidatedService.getChatConsolidated(userId);
             res.status(result.status).send(result.message);
             return;
         }

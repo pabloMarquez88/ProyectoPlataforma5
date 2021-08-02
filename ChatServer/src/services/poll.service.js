@@ -6,23 +6,31 @@ const Channel = db.channel;
 const Poll = db.poll;
 const User = db.UserChat;
 
-persistPollChat = async(channelId, options, text, exist) =>{
+persistPollChat = async(channelId, options, text, exist, userId) =>{
     console.log("saving poll chat")
     let channel = await Channel.findOne({
         where: {
             id: channelId
         }
     });
+    let user = await User.findOne({
+        where: {
+            id: userId
+        }
+    })
     let optionInit = options.split(",").join(":0,") + ":0";
     let poll = await Poll.create({
         options: optionInit,
         date: Date.now(),
         status: PROPOSED,
         openOptions: '',
-        text:text
+        text:text,
+        username: user.username
     });
     poll.setChannel(channel);
     await poll.save();
+    channel.addSuscriptions(user);
+    await channel.save();
     return getResponse(200, "chat poll saved");
 }
 
@@ -123,7 +131,7 @@ getPollOpen = async (poll) =>{
         });
 
     });
-    return {pollId: poll.id, text:poll.text, opts:data};
+    return {pollId: poll.id, text:poll.text, opts:data, date: poll.date, username:poll.username};
 }
 
 getPollResults = async (poll) =>{
@@ -141,7 +149,7 @@ getPollResults = async (poll) =>{
         });
 
     });
-    return data;
+    return { id:poll.id, date:poll.date, text:poll.text, results:data, username:poll.username};
 }
 
 const pollService = {

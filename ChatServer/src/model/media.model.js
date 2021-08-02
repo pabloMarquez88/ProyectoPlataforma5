@@ -13,6 +13,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         date: {
             type: DataTypes.DATE
+        },
+        username: {
+            type: Sequelize.STRING
         }
     });
 

@@ -3,51 +3,48 @@ const {getResponse} = require('../utils/common.util');
 const db = sequelize.db;
 const Channel = db.channel;
 const Media = db.media;
-const multer = require("multer");
+const User = db.UserChat;
 
-const imageFilter = (req, file, cb) => {
-    if (file.mimetype.startsWith("image")) {
-        cb(null, true);
-    } else {
-        cb("Please upload only images.", false);
-    }
-};
-
-var storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, __basedir + "/resources/static/assets/uploads/");
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`);
-    },
-});
-
-var uploadFile = multer({ storage: storage, fileFilter: imageFilter });
-module.exports = uploadFile;
-
-
-
-persistMediaChat = async(channelId, base64Image, filename, type) =>{
+persistMediaChat = async(channelId, base64Image, filename, userId, type) =>{
     console.log("saving media chat")
     let channel = await Channel.findOne({
         where: {
             id: channelId
         }
     });
+    let user = await User.findOne({
+        where: {
+            id: userId
+        }
+    })
     let media = await Media.create({
         data: base64Image,
         name: filename,
         type: type,
-        date: Date.now()
+        date: Date.now(),
+        username: user.username
     });
     media.setChannel(channel);
     await media.save();
+    channel.addSuscriptions(user);
+    await channel.save();
     return getResponse(200, "chat media saved");
+}
+
+getMediaChat = async(mediaId) => {
+    console.log("get media chat")
+    let media = await Media.findOne({
+        where: {
+            id: mediaId
+        }
+    })
+    return getResponse(200, media);
 }
 
 
 const mediaService = {
-    persistMediaChat : persistMediaChat
+    persistMediaChat : persistMediaChat,
+    getMediaChat:getMediaChat
 };
 
 module.exports = mediaService;

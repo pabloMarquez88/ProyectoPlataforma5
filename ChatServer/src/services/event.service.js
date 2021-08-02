@@ -7,23 +7,31 @@ const Event = db.event;
 const User = db.UserChat;
 
 
-persistEventChat = async(channelId, content, location, dateStart, dateEnd) =>{
+persistEventChat = async(channelId, content, location, dateStart, dateEnd, userId) =>{
     console.log("saving event chat")
     let channel = await Channel.findOne({
         where: {
             id: channelId
         }
     });
+    let user = await User.findOne({
+        where: {
+            id: userId
+        }
+    })
     let event = await Event.create({
         content: content,
         location: location,
         status: PROPOSED,
         dateStart: dateStart,
         dateEnd:dateEnd,
-        date:Date.now()
+        date:Date.now(),
+        username: user.username
     });
     event.setChannel(channel);
     await event.save();
+    channel.addSuscriptions(user);
+    await channel.save();
     return getResponse(200, "event saved");
 }
 
@@ -111,7 +119,9 @@ getEventResults = async (eventId, userId) => {
         dateEnd: event.dateEnd,
         assist: assistList,
         reject: rejectList,
-        allowVote:vote
+        allowVote:vote,
+        date: event.date,
+        username: event.username
     }
     return getResponse(200, data);
 }

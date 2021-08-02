@@ -8,4 +8,13 @@ INSERT INTO `plataforma5_final`.`userchats` (`username`, `email`, `createdAt`, `
 INSERT INTO `plataforma5_final`.`userchats` (`username`, `email`, `createdAt`, `updatedAt`) VALUES ('3', 'email3', '2021-07-30 09:11:55', '2021-07-30 09:11:56');
 INSERT INTO `plataforma5_final`.`channels` (`name`, `createdAt`, `updatedAt`,`userchatid`) VALUES ('elCanal', '2021-07-30 09:12:50', '2021-07-30 09:12:49',1);
 INSERT INTO `plataforma5_final`.`events` (`id`, `content`, `status`, `location`, `dateStart`, `dateEnd`, `date`, `createdAt`, `updatedAt`, `channelId`) VALUES (1, 'UN CONTENT', 'PROPOSED', 'UNA LOCATION', '2017-12-23 20:30:15', '2017-12-23 20:30:15', '2021-08-01 21:57:07', '2021-08-01 21:57:07', '2021-08-01 21:57:07', 1);
-INSERT INTO `polls` (`id`, `options`, `openOptions`, `status`, `date`, `createdAt`, `updatedAt`, `channelId`) VALUES (1, 'OPTION1:0,OPTION2:0,OPTION3:0', '', 'PROPOSED', '2021-08-01 22:45:08', '2021-08-01 22:45:08', '2021-08-01 22:45:08', 1);
+INSERT INTO `polls` (`id`, `options`, `openOptions`, `status`, `date`, `createdAt`, `updatedAt`, `channelId`) VALUES (1, 'OPTION1:1,OPTION2:0,OPTION3:1', 'OPTION1-NEW2:2,OPTIOasdN1-NEW2:1', 'UNA asd', '2021-08-01 22:45:08', '2021-08-01 22:45:08', '2021-08-01 23:03:10', 1);
+INSERT INTO `events` (`id`, `content`, `status`, `location`, `dateStart`, `dateEnd`, `date`, `createdAt`, `updatedAt`, `channelId`) VALUES (1, 'UN CONTENT', 'UNA asd', 'UNA LOCATION', '2017-12-23 20:30:15', '2017-12-23 20:30:15', '2021-08-01 21:57:07', '2021-08-01 21:57:07', '2021-08-01 22:13:41', 1);
+INSERT INTO `userschats_event_assist` (`createdAt`, `updatedAt`, `eventId`, `userchatId`) VALUES ('2021-08-01 22:18:40', '2021-08-01 22:18:40', 1, 1);
+INSERT INTO `userschats_event_assist` (`createdAt`, `updatedAt`, `eventId`, `userchatId`) VALUES ('2021-08-01 22:16:07', '2021-08-01 22:16:07', 1, 2);
+INSERT INTO `userschats_event_reject` (`createdAt`, `updatedAt`, `eventId`, `userchatId`) VALUES ('2021-08-01 22:11:42', '2021-08-01 22:11:42', 1, 1);
+INSERT INTO `userschats_poll` (`createdAt`, `updatedAt`, `pollId`, `userchatId`) VALUES ('2021-08-01 22:54:05', '2021-08-01 22:54:05', 1, 2);
+
+
+
+

@@ -2,6 +2,9 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize, Sequelize) => {
     const Event = sequelize.define("polls", {
+        text: {
+            type: Sequelize.STRING
+        },
         options: {
             type: Sequelize.STRING
         },

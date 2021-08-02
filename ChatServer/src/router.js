@@ -21,4 +21,6 @@ router.put(`/${version}/chat/event/reply`, chatController.replyToEvent);
 router.put(`/${version}/chat/poll/reply`, chatController.handlePollReply);
 router.put(`/${version}/chat/poll`, chatController.updatePollStatus);
 
+router.get(`/${version}/chat/poll`, chatController.getPoll);
+
 module.exports = {router, version};

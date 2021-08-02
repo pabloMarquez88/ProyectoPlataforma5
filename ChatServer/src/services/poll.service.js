@@ -1,12 +1,12 @@
 const sequelize = require('../model/sequelize.facade');
 const {getResponse} = require('../utils/common.util');
-const {PROPOSED} = require('../utils/constant')
+const {PROPOSED, CLOSED} = require('../utils/constant')
 const db = sequelize.db;
 const Channel = db.channel;
 const Poll = db.poll;
 const User = db.UserChat;
 
-persistPollChat = async(channelId, options, exist) =>{
+persistPollChat = async(channelId, options, text, exist) =>{
     console.log("saving poll chat")
     let channel = await Channel.findOne({
         where: {
@@ -18,7 +18,8 @@ persistPollChat = async(channelId, options, exist) =>{
         options: optionInit,
         date: Date.now(),
         status: PROPOSED,
-        openOptions: ''
+        openOptions: '',
+        text:text
     });
     poll.setChannel(channel);
     await poll.save();
@@ -89,10 +90,65 @@ updatePollStatus = async (pollId, status) => {
     return getResponse(200, "poll status updated");
 }
 
+getPoll = async (pollId, userId) => {
+    console.log("get poll")
+    let poll = await Poll.findOne({
+        where: {
+            id:pollId
+        }
+    });
+    let users = await poll.getPollresponses();
+    let userVoted = false;
+    users.forEach((user, i) =>{
+        if (user.id == userId){
+            userVoted= true;
+        }
+    });
+    if (userVoted || poll.status == CLOSED){
+        //show results
+        return getResponse(200, await getPollResults(poll));
+    }else{
+        //Allow vote
+        return getResponse(200, await getPollOpen(poll));
+    }
+}
+
+getPollOpen = async (poll) =>{
+    let optionsFinal = poll.options.split(",");
+    Array.prototype.push.apply(optionsFinal, poll.openOptions.split(","));
+    let data = [];
+    optionsFinal.forEach((opt, i)=>{
+        data.push({
+            opt: opt.split(":")[0]
+        });
+
+    });
+    return {pollId: poll.id, text:poll.text, opts:data};
+}
+
+getPollResults = async (poll) =>{
+    let optionsFinal = poll.options.split(",");
+    Array.prototype.push.apply(optionsFinal, poll.openOptions.split(","));
+    let data = [];
+    let total = 0;
+    optionsFinal.forEach((opt, i)=>{
+        total = total + parseInt(opt.split(":")[1]);
+    });
+    optionsFinal.forEach((opt, i)=>{
+        data.push({
+            opt: opt.split(":")[0],
+            amount: ((opt.split(":")[1]/total) * 100)
+        });
+
+    });
+    return data;
+}
+
 const pollService = {
     persistPollChat : persistPollChat,
     handlePollReply: handlePollReply,
-    updatePollStatus:updatePollStatus
+    updatePollStatus:updatePollStatus,
+    getPollResults:getPoll
 };
 
 module.exports = pollService;

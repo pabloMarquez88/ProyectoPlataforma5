@@ -26,9 +26,9 @@ class chatController{
     }
 
     static async postPoll(req, res) {
-        let {channelId, options, exist} = req.body;
+        let {channelId, options, exist, text} = req.body;
         if (exist){
-            let result = await pollService.persistPollChat(channelId, options, exist)
+            let result = await pollService.persistPollChat(channelId, options, text, exist)
             res.status(result.status).send(result.message);
             return;
         }
@@ -79,6 +79,16 @@ class chatController{
         let {pollId, status, exist} = req.body;
         if (exist){
             let result = await pollService.updatePollStatus(pollId, status);
+            res.status(result.status).send(result.message);
+            return;
+        }
+        res.status(200).send("HOLA");
+    }
+
+    static async getPoll(req, res) {
+        let {pollId, userId, exist} = req.body;
+        if (exist){
+            let result = await pollService.getPollResults(pollId, userId);
             res.status(result.status).send(result.message);
             return;
         }

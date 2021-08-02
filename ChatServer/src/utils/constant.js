@@ -1,4 +1,4 @@
 const PROPOSED = "PROPOSED";
+const CLOSED = "CLOSED";
 
-
-module.exports = {PROPOSED};
+module.exports = {PROPOSED, CLOSED};

@@ -95,6 +95,16 @@ class chatController{
         res.status(200).send("HOLA");
     }
 
+    static async getEvent(req, res) {
+        let {eventId, userId, exist} = req.body;
+        if (exist){
+            let result = await eventService.getEventResults(eventId, userId);
+            res.status(result.status).send(result.message);
+            return;
+        }
+        res.status(200).send("HOLA");
+    }
+
 
 }
 

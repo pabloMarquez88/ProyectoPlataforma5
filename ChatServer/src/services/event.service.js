@@ -66,10 +66,61 @@ addResponseToEvent = async (eventId, userId, reply) => {
     return getResponse(200, "event status reply received");
 }
 
+isPresent = async (userList, userId) => {
+    let isPresent = false;
+    userList.forEach((elem, i) =>{
+        if (elem.id==userId){
+            return true;
+        }
+    });
+    return isPresent;
+}
+
+getEventResults = async (eventId, userId) => {
+    console.log("get event")
+    let event = await Event.findOne({
+        where: {
+            id:eventId
+        }
+    });
+    let rejects = await event.getUserreject();
+    let assist = await event.getUserassist();
+    let rejectList = [];
+    let assistList = [];
+    rejects.forEach((elem, i) =>{
+        rejectList.push({
+            id:elem.id,
+            username:elem.username
+        });
+    });
+    assist.forEach((elem, i) =>{
+        assistList.push({
+            id:elem.id,
+            username:elem.username
+        });
+    });
+    let vote = await isPresent(rejects, userId);
+    if (!vote) {
+        vote = await isPresent(assist, userId);
+    }
+    let data = {
+        id:event.id,
+        text: event.content,
+        location: event.location,
+        dateStart: event.dateStart,
+        dateEnd: event.dateEnd,
+        assist: assistList,
+        reject: rejectList,
+        allowVote:vote
+    }
+    return getResponse(200, data);
+}
+
 const eventService = {
     persistEventChat : persistEventChat,
     updateStatusEventChat : updateStatusEventChat,
-    addResponseToEvent : addResponseToEvent
+    addResponseToEvent : addResponseToEvent,
+    getEventResults : getEventResults
 };
 
 module.exports = eventService;
